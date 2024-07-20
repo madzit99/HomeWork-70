@@ -1,28 +1,59 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchContacts } from "./ContactsThunks";
+import { Contact } from "../../types";
+import OneContact from "./OneContact";
+import ModalContact from "../ModalContact/Modal";
 
 const ContactsList = () => {
   const contacts = useSelector((state: RootState) => state.contacts.contacts);
   const dispatch: AppDispatch = useDispatch();
 
+  const [open, setOpen] = useState<boolean>(false);
+
+  const [modalContent, setModalContent] = useState<Contact>({
+    name: "",
+    phone: "",
+    email: "",
+    photo: "",
+  });
+
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
+  const handleContactClick = (contact: Contact) => {
+    setModalContent(contact);
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
-      {contacts ? (
-        Object.keys(contacts).map((key) => ( 
-          <>
-            <h1>{contacts[key].name}</h1>
-            <h2>{contacts[key].phone}</h2>
-          </>
-        ))
+      {contacts && Object.keys(contacts).length > 0 ? (
+        Object.keys(contacts).map((key) => {
+          const contact = contacts[key];
+          return (
+            <OneContact
+              key={key}
+              name={contact.name}
+              photo={contact.photo}
+              onClick={() => handleContactClick(contact)}
+            />
+          );
+        })
       ) : (
         <h1 className="text-center">Нет контактов</h1>
       )}
+      <ModalContact
+        open={open}
+        contact={modalContent}
+        onClose={() => onClose()}
+      />
     </div>
   );
 };
