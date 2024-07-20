@@ -1,9 +1,11 @@
-const Home = () => {
-    return (
-        <div>
+import ContactsList from "../../components/ContacstList/ContactsList";
 
-        </div>
-    )
-}
+const Home = () => {
+  return (
+    <div>
+      <ContactsList />
+    </div>
+  );
+};
 
 export default Home;
