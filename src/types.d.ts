@@ -1,4 +1,5 @@
 export interface Contact {
+  id: string;
   name: string;
   phone: string;
   email: string;
@@ -6,5 +7,5 @@ export interface Contact {
 }
 
 export interface Contacts {
-    [contactId: string]: Contact;
+  [contactId: string]: Contact;
 }

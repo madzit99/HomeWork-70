@@ -13,6 +13,7 @@ const ContactsList = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const [modalContent, setModalContent] = useState<Contact>({
+    id: "",
     name: "",
     phone: "",
     email: "",
@@ -23,8 +24,11 @@ const ContactsList = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const handleContactClick = (contact: Contact) => {
-    setModalContent(contact);
+  const handleContactClick = (contact: Contact, id: string) => {
+    setModalContent(() => ({
+      ...contact,
+      id: id,
+    }));
     setOpen(true);
   };
 
@@ -42,7 +46,7 @@ const ContactsList = () => {
               key={key}
               name={contact.name}
               photo={contact.photo}
-              onClick={() => handleContactClick(contact)}
+              onClick={() => handleContactClick(contact, key)}
             />
           );
         })
